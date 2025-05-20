@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trang Web Bán Hàng</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      margin: 0;
+      overflow-x: hidden;
+    }
+    .fullscreen-img {
+      height: 100vh;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    nav a.active {
+      border-bottom: 2px solid #2563eb;
+      padding-bottom: 2px;
+    }
+    .icon-zoom {
+      transition: transform 0.3s ease;
+    }
+    .icon-zoom:hover {
+      transform: scale(1.1);
+    }
+    .arrow-right {
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+    .arrow-right:hover {
+      transform: translateX(4px);
+    }
+    .product-item {
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .product-item.hidden {
+      opacity: 0;
+      transform: scale(0.95);
+      display: none;
+    }
+    #searchResults {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #e5e7eb;
+      max-height: 300px;
+      overflow-y: auto;
+      z-index: 100;
+      display: none;
+    }
+    #searchResults a {
+      display: block;
+      padding: 10px;
+      border-bottom: 1px solid #e5e7eb;
+      color: #374151;
+      text-decoration: none;
+    }
+    #searchResults a:hover {
+      background-color: #f3f4f6;
+      color: #2563eb;
+    }
+    .hamburger {
+      display: none;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 6px;
+    }
+    #mobileMenu {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background: white;
+      z-index: 50;
+      padding: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    #mobileMenu a {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 10px;
+      margin: 5px 0;
+      border: none;
+      background: none;
+      text-decoration: none;
+      color: #374151;
+    }
+    #mobileMenu a:hover {
+      color: #2563eb;
+    }
+    @media (max-width: 767px) {
+      .hamburger {
+        display: block;
+      }
+      nav {
+        display: none;
+      }
+      header .container {
+        flex-direction: column;
+        padding: 10px;
+      }
+      header .flex.items-center.space-x-4 {
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 10px;
+      }
+      #searchBar {
+        flex-direction: column;
+        width: 90%;
+        margin: 0 auto;
+      }
+      #searchBar input {
+        width: 100%;
+        margin-bottom: 10px;
+        border-radius: 4px;
+      }
+      #searchBar button {
+        width: 100%;
+        border-radius: 4px;
+      }
+      .fullscreen-img {
+        height: 50vh;
+      }
+      #section1 .flex {
+        flex-direction: column;
+      }
+      #section3 .grid {
+        grid-template-columns: 1fr;
+      }
+      #searchResults {
+        width: 90%;
+        margin: 0 auto;
+      }
+    }
+    @media (min-width: 768px) and (max-width: 1024px) {
+      header .container {
+        padding: 15px;
+      }
+      .fullscreen-img {
+        height: 70vh;
+      }
+      #section3 .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="bg-transparent fixed top-0 left-0 right-0 z-50">
+    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="trangchulon.html">
+        <img src="logoo.png" alt="Logo" class="h-10">
+      </a>
+      <div class="hamburger" onclick="toggleMobileMenu()">☰</div>
+      <nav class="flex items-center space-x-6">
+        <a href="trangchucuoi.html" class="text-gray-700 hover:text-blue-600 active">Trang chủ</a>
+        <a href="vechungtoi.html" class="text-gray-700 hover:text-blue-600">Về chúng tôi</a>
+        <a href="sanphamchuan.html" class="text-gray-700 hover:text-blue-600">Danh mục hàng</a>
+        <a href="lienhe.html" class="text-gray-700 hover:text-blue-600">Liên hệ</a>
+      </nav>
+      <div class="flex items-center space-x-4">
+        <button onclick="toggleSearch()">
+          <img src="timkiem.png" alt="Search" class="w-6 h-6 icon-zoom">
+        </button>
+        <a href="dangnhap.html">
+          <img src="taikhoan.png" alt="Login" class="w-6 h-6 icon-zoom">
+        </a>
+        <a href="lienhe.html" target="_blank">
+          <img src="mess.png" alt="Messenger" class="w-6 h-6 icon-zoom">
+        </a>
+        <a href="cart.html">
+          <img src="giohangg.png" alt="Cart" class="w-6 h-6 icon-zoom">
+        </a>
+      </div>
+    </div>
+    <div id="searchBar" class="bg-gray-100 p-4 hidden flex items-center relative">
+      <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..." class="w-full p-2 rounded-l border mr-2">
+      <button onclick="performSearch()" class="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-600">Tìm</button>
+      <div id="searchResults"></div>
+    </div>
+    <div id="mobileMenu" class="hidden">
+      <a href="trangchucuoi.html" class="text-gray-700 hover:text-blue-600 block p-2">Trang chủ</a>
+      <a href="vechungtoi.html" class="text-gray-700 hover:text-blue-600 block p-2">Về chúng tôi</a>
+      <a href="sanphamchuan.html" class="text-gray-700 hover:text-blue-600 block p-2">Danh mục hàng</a>
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <main>
+    <!-- Khúc 1: Cụm văn bản "Mặt trời nhỏ" bên trái, ảnh bên phải -->
+    <section id="section1" class="py-16 bg-white">
+      <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
+        <div class="md:w-1/2 md:pr-8 text-center md:text-left mb-8 md:mb-0">
+          <h2 class="text-3xl font-bold mb-4">Mặt trời nhỏ</h2>
+          <p class="text-gray-600 mb-4">Chào mừng bạn đến với cửa hàng của sự tươi sáng và phong cách! Bộ sưu tập của chúng tôi mang đến những sản phẩm thời trang độc đáo, giúp bạn tỏa sáng như mặt trời nhỏ trong mọi khoảnh khắc.</p>
+          <div class="flex items-center justify-center md:justify-start">
+            <a href="about.html" class="arrow-right flex items-center">
+              <svg class="w-6 h-6 mr-2 text-gray-700 hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+              <span class="italic text-gray-700 hover:text-blue-600">Về chúng tôi</span>
+            </a>
+          </div>
+        </div>
+        <div class="md:w-1/2">
+          <img src="https://media.routine.vn/1920x0/prod/media/sau-ly-hai-pc-png-3in1.webp" alt="Ảnh Mặt trời nhỏ" class="w-full rounded-lg">
+        </div>
+      </div>
+    </section>
+
+    <!-- Khúc 2: Ảnh toàn màn hình -->
+    <section id="section2" class="fullscreen-img" style="background-image: url('https://im.uniqlo.com/global-cms/spa/res89dc2faa0a89432f61f2d8d28fc906e1fr.jpg');">
+      <div class="text-center text-white">
+        <h2 class="text-4xl font-bold"></h2>
+      </div>
+    </section>
+
+    <!-- Khúc 3: Danh sách sản phẩm -->
+    <section id="section3" class="py-16 bg-gray-100">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-8">Sản phẩm nổi bật</h2>
+        <div id="productList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <a href="quần jeans dài cạp đính nhiều cúc gập gấu 512.html" class="product-link">
+            <div class="product-item bg-white rounded-lg shadow p-4" data-category="vay-quan">
+              <img src="quần jeans dài cạp đính nhiều cúc gập gấu 512.png" alt="Quần jeans dài cạp đính nhiều cúc gập gấu" class="w-full rounded-lg mb-4" loading="lazy">
+              <h3 class="text-lg font-semibold product-name">Quần jeans dài cạp đính nhiều cúc gập gấu</h3>
+              <p class="text-gray-600 product-price">512,000 VND</p>
+            </div>
+          </a>
+          <a href="quần jeans dáng badgy 415.html" class="product-link">
+            <div class="product-item bg-white rounded-lg shadow p-4" data-category="vay-quan">
+              <img src="quần jeans dáng badgy 415.png" alt="Quần jeans dáng badgy" class="w-full rounded-lg mb-4" loading="lazy">
+              <h3 class="text-lg font-semibold product-name">Quần jeans dáng badgy</h3>
+              <p class="text-gray-600 product-price">415,000 VND</p>
+            </div>
+          </a>
+          <a href="quần jeans hai túi trước có con đỉa be 405.html" class="product-link">
+            <div class="product-item bg-white rounded-lg shadow p-4" data-category="vay-quan">
+              <img src="quần jeans hai túi trước có con đỉa be 405.png" alt="Quần jeans hai túi trước có con đỉa be" class="w-full rounded-lg mb-4" loading="lazy">
+              <h3 class="text-lg font-semibold product-name">Quần jeans hai túi trước có con đỉa be</h3>
+              <p class="text-gray-600 product-price">405,000 VND</p>
+            </div>
+          </a>
+          <a href="quần jeans viền 2 túi 429.html" class="product-link">
+            <div class="product-item bg-white rounded-lg shadow p-4" data-category="vay-quan">
+              <img src="quần jeans viền 2 túi 429.png" alt="Quần jeans viền 2 túi" class="w-full rounded-lg mb-4" loading="lazy">
+              <h3 class="text-lg font-semibold product-name">Quần jeans viền 2 túi</h3>
+              <p class="text-gray-600 product-price">429,000 VND</p>
+            </div>
+          </a>
+          <a href="quần jeans ống đứng 389.html" class="product-link">
+            <div class="product-item bg-white rounded-lg shadow p-4" data-category="vay-quan">
+              <img src="quần jeans ống đứng 389.png" alt="Quần jeans ống đứng" class="w-full rounded-lg mb-4" loading="lazy">
+              <h3 class="text-lg font-semibold product-name">Quần jeans ống đứng</h3>
+              <p class="text-gray-600 product-price">389,000 VND</p>
+            </div>
+          </a>
+          <a href="quần kaki cap chun dây rút đen 299.html" class="product-link">
+            <div class="product-item bg-white rounded-lg shadow p-4" data-category="vay-quan">
+              <img src="quần kaki cap chun dây rút đen 299.png" alt="Quần kaki cap chun dây rút đen" class="w-full rounded-lg mb-4" loading="lazy">
+              <h3 class="text-lg font-semibold product-name">Quần kaki cap chun dây rút đen</h3>
+              <p class="text-gray-600 product-price">299,000 VND</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Khúc 4: Chân trang -->
+    <footer id="section4" class="bg-gray-800 text-white py-8">
+      <div class="container mx-auto px-4 text-center">
+        <h3 class="text-xl font-bold mb-4">Mặt trời nhỏ</h3>
+        <p class="text-gray-400 mb-4">Cửa hàng thời trang của sự tươi sáng và phong cách.</p>
+        <div class="flex justify-center gap-4">
+          <a href="lienhe.html" class="text-gray-400 hover:text-white">Liên hệ</a>
+          <a href="#" class="text-gray-400 hover:text-white">Chính sách</a>
+          <a href="about.html" class="text-gray-400 hover:text-white">Về chúng tôi</a>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- JavaScript -->
+  <script>
+    // Dữ liệu sản phẩm
+    const products = [
+    { name: 'quần jeans dài cạp đính nhiều cúc gập gấu', link: 'quần jeans dài cạp đính nhiều cúc gập gấu 512.html', category: 'vay-quan', price: '512,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+jeans+dài+cạp+đính+nhiều+cúc+gập+gấu' },
+      { name: 'quần jeans dáng badgy', link: 'quần jeans dáng badgy 415.html', category: 'vay-quan', price: '415,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+jeans+dáng+badgy' },
+      { name: 'quần jeans hai túi trước có con đỉa be', link: 'quần jeans hai túi trước có con đỉa be 405.html', category: 'vay-quan', price: '405,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+jeans+hai+túi+trước+có+con+đỉa+be' },
+      { name: 'quần jeans ko cạp', link: 'quần jeans ko cạp 323.html', category: 'vay-quan', price: '323,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+jeans+ko+cạp' },
+      { name: 'quần jeans ống đứng', link: 'quần jeans ống đứng 389.html', category: 'vay-quan', price: '389,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+jeans+ống+đứng' },
+      { name: 'quần jeans ống loe', link: 'quần jeans ống loe 237.html', category: 'vay-quan', price: '237,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+jeans+ống+loe' },
+      { name: 'quần jeans ống rộng có cúc cài', link: 'quần jeans ống rộng có cúc cài 359.html', category: 'vay-quan', price: '359,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+jeans+ống+rộng+có+cúc+cài' },
+      { name: 'quần jeans ống suông 2 túi trước', link: 'quần jeans ống suông 2 túi trước 420.html', category: 'vay-quan', price: '420,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+jeans+ống+suông+2+túi+trước' },
+      { name: 'quần jeans ống suông năng động trắng', link: 'quần jeans ống suông năng động trắng 379.html', category: 'vay-quan', price: '379,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+jeans+ống+suông+năng+động+trắng' },
+      { name: 'quần jeans ống suông rộng có cúc cài', link: 'quần jeans ống suông rộng có cúc cài 512.html', category: 'vay-quan', price: '512,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+jeans+ống+suông+rộng+có+cúc+cài' },
+      { name: 'quần jeans rách suông', link: 'quần jeans rách suông 369.html', category: 'vay-quan', price: '369,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+jeans+rách+suông' },
+      { name: 'quần jeans suông rách ít', link: 'quần jeans suông rách ít 310.html', category: 'vay-quan', price: '310,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+jeans+suông+rách+ít' },
+      { name: 'quần jeans viền 2 túi', link: 'quần jeans viền 2 túi 429.html', category: 'vay-quan', price: '429,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+jeans+viền+2+túi' },
+      { name: 'quần kaki cap chun dây rút đen', link: 'quần kaki cap chun dây rút đen 299.html', category: 'vay-quan', price: '299,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+kaki+cap+chun+dây+rút+đen' },
+      { name: 'quần kaki dây rút ống đen', link: 'quần kaki dây rút ống đen 275.html', category: 'vay-quan', price: '275,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+kaki+dây+rút+ống+đen' },
+      { name: 'quần kaki hai cúc xẻ chân sau', link: 'quần kaki hai cúc xẻ chân sau 365.html', category: 'vay-quan', price: '365,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+kaki+hai+cúc+xẻ+chân+sau' },
+      { name: 'quần kaki loe gấu rách', link: 'quần kaki loe gấu rách 235.html', category: 'vay-quan', price: '235,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+kaki+loe+gấu+rách' },
+      { name: 'quần kaki mẫu mới hồng', link: 'quần kaki mẫu mới hồng 415.html', category: 'vay-quan', price: '415,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+kaki+mẫu+mới+hồng' },
+      { name: 'quần kaki ống suông trẻ trung be', link: 'quần kaki ống suông trẻ trung be 359.html', category: 'vay-quan', price: '359,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+kaki+ống+suông+trẻ+trung+be' },
+      { name: 'quần kaki thụng có ly trước', link: 'quần kaki thụng có ly trước 285.html', category: 'vay-quan', price: '285,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+kaki+thụng+có+ly+trước' },
+      { name: 'quần kaki túi hộp đen', link: 'quần kaki túi hộp đen 375.html', category: 'vay-quan', price: '375,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+kaki+túi+hộp+đen' },
+      { name: 'quần vải cạp chun lưng', link: 'quần vải cạp chun lưng 285.html', category: 'vay-quan', price: '285,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+vải+cạp+chun+lưng' },
+      { name: 'quần vải cạp chun lưng khuy trước', link: 'quần vải cạp chun lưng khuy trước 385.html', category: 'vay-quan', price: '385,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+vải+cạp+chun+lưng+khuy+trước' },
+      { name: 'quần vải dáng suông ko cạp 2 túi chéo trước', link: 'quần vải dáng suông ko cạp 2 túi chéo trước 425.html', category: 'vay-quan', price: '425,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+vải+dáng+suông+ko+cạp+2+túi+chéo+trước' },
+      { name: 'quần vải hai cạp có cúc cài', link: 'quần vải hai cạp có cúc cài 347.html', category: 'vay-quan', price: '347,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+vải+hai+cạp+có+cúc+cài' },
+      { name: 'quần vải ống đứng', link: 'quần vải ống đứng 299.html', category: 'vay-quan', price: '299,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+vải+ống+đứng' },
+      { name: 'quần vải ống loe có túi', link: 'quần vải ống loe có túi 315.html', category: 'vay-quan', price: '315,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+vải+ống+loe+có+túi' },
+      { name: 'quần vải ống rộng', link: 'quần vải ống rộng 379.html', category: 'vay-quan', price: '379,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+vải+ống+rộng' },
+      { name: 'quần vải ống suông 2 túi giả', link: 'quần vải ống suông 2 túi giả 399.html', category: 'vay-quan', price: '399,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+vải+ống+suông+2+túi+giả' },
+      { name: 'quần vải xếp ly nhẹ đen', link: 'quần vải xếp ly nhẹ đen 396.html', category: 'vay-quan', price: '396,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+vải+xếp+ly+nhẹ+đen' },
+      { name: 'áo hai dây dạng yếm nâu', link: 'aohaidaydangyemnau.html', category: 'ao', price: '250,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+hai+dây+dạng+yếm+nâu' },
+      { name: 'áo hai dây mẫu 1 đen', link: 'aohaidaydangmau1den.html', category: 'ao', price: '230,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+hai+dây+mẫu+1+đen' },
+      { name: 'áo hai dây thắt nơ đen', link: 'aohaidaythatnoden.html', category: 'ao', price: '240,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+hai+dây+thắt+nơ+đen' },
+      { name: 'áo hai dây thun ôm đen', link: 'aohaidaythunomden.html', category: 'ao', price: '220,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+hai+dây+thun+ôm+đen' },
+      { name: 'áo hoodie 4 con gấu hồng', link: 'aohoodie4congauhong.html', category: 'ao', price: '350,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+hoodie+4+con+gấu+hồng' },
+      { name: 'áo hoodie có mũ dạng rộng đen', link: 'aohoodiecomudangrongden.html', category: 'ao', price: '360,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+hoodie+có+mũ+dạng+rộng+đen' },
+      { name: 'áo khoác dạ', link: 'aokhoacda2.html', category: 'khoac', price: '550,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+khoác+dạ' },
+      { name: 'áo khoác da lộn hồng', link: 'aokhoacdalonhong.html', category: 'khoac', price: '580,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+khoác+da+lộn+hồng' },
+      { name: 'áo khoác dạ phối viền đỏ', link: 'aokhoacdaphoiviendo.html', category: 'khoac', price: '570,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+khoác+dạ+phối+viền+đỏ' },
+      { name: 'áo khoác dạ trắng túi giả', link: 'aokhoacdatrangtuigia.html', category: 'khoac', price: '560,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+khoác+dạ+trắng+túi+giả' },
+      { name: 'áo khoác gile phao dạng ngắn đen', link: 'aokhoacgilephaodangnganden.html', category: 'khoac', price: '400,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+khoác+gile+phao+dạng+ngắn+đen' },
+      { name: 'áo khoác gió be', link: 'aokhoacgiobe.html', category: 'khoac', price: '380,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+khoác+gió+be' },
+      { name: 'áo khoác jeans gile', link: 'aokhoacjeansgile.html', category: 'khoac', price: '390,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+khoác+jeans+gile' },
+      { name: 'áo khoác lông', link: 'aokhoaclong.html', category: 'khoac', price: '600,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+khoác+lông' },
+      { name: 'áo khoác nỉ gấu bo chun hồng', link: 'aokhoacnigaubochunhong.html', category: 'khoac', price: '410,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+khoác+nỉ+gấu+bo+chun+hồng' },
+      { name: 'áo khoác phao đen', link: 'aokhoacphaoden.html', category: 'khoac', price: '450,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+khoác+phao+đen' },
+      { name: 'áo kiểu buộc', link: 'aokieubuoc.html', category: 'ao', price: '270,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+kiểu+buộc' },
+      { name: 'áo nỉ cổ tròn bo chun hồng', link: 'aonicotronbochunhong.html', category: 'ao', price: '300,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+nỉ+cổ+tròn+bo+chun+hồng' },
+      { name: 'áo nỉ cổ tròn dáng croptop kem', link: 'aonicotrongdangcroptopkem.html', category: 'ao', price: '290,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+nỉ+cổ+tròn+dáng+croptop+kem' },
+      { name: 'áo nỉ cún gạch', link: 'aonicungach.html', category: 'ao', price: '310,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+nỉ+cún+gạch' },
+      { name: 'áo nỉ dài tay mẫu mới đen', link: 'aonidaitaymaumoiden.html', category: 'ao', price: '320,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+nỉ+dài+tay+mẫu+mới+đen' },
+      { name: 'áo nỉ họa tiết gấu hồng', link: 'aonihoatietgauhong.html', category: 'ao', price: '330,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+nỉ+họa+tiết+gấu+hồng' },
+      { name: 'áo nỉ nothing tell', link: 'aoninothingtell.html', category: 'ao', price: '300,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+nỉ+nothing+tell' },
+      { name: 'áo nỉ soo.hee trắng', link: 'aonisooheetrang.html', category: 'ao', price: '310,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+nỉ+soo.hee+trắng' },
+      { name: 'áo sơ mi cổ tim bẻ kẻ xanh', link: 'aosomicotimbecexanh.html', category: 'ao', price: '280,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+sơ+mi+cổ+tim+bẻ+kẻ+xanh' },
+      { name: 'áo sơ mi dài tay hồng', link: 'aosomidaitayhong.html', category: 'ao', price: '290,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+sơ+mi+dài+tay+hồng' },
+      { name: 'áo sơ mi dài tay kèm áo lót xanh', link: 'aosomidaitaykemaolotxanh.html', category: 'ao', price: '310,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+sơ+mi+dài+tay+kèm+áo+lót+xanh' },
+      { name: 'áo sơ mi dài tay trắng điệu', link: 'aosomidaitaytrangdieu.html', category: 'ao', price: '300,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+sơ+mi+dài+tay+trắng+điệu' },
+      { name: 'áo sơ mi giả bò ngắn tay', link: 'aosomigiabonhattay.html', category: 'ao', price: '270,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+sơ+mi+giả+bò+ngắn+tay' },
+      { name: 'áo sơ mi kẻ hồng', link: 'aosomikehong.html', category: 'ao', price: '280,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+sơ+mi+kẻ+hồng' },
+      { name: 'áo sơ mi kẻ sát nách xanh cốm', link: 'aosomikesatnachxanhcom.html', category: 'ao', price: '260,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+sơ+mi+kẻ+sát+nách+xanh+cốm' },
+      { name: 'áo sơ mi kèm áo lót đỏ', link: 'aosomikemaolotdo.html', category: 'ao', price: '310,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+sơ+mi+kèm+áo+lót+đỏ' },
+      { name: 'áo sơ mi kèm áo lót trắng', link: 'aosomikemaolottrang.html', category: 'ao', price: '310,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+sơ+mi+kèm+áo+lót+trắng' },
+      { name: 'áo sơ mi ngắn tay cổ đức xanh', link: 'aosominhattaycoducxanh.html', category: 'ao', price: '270,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+sơ+mi+ngắn+tay+cổ+đức+xanh' },
+      { name: 'áo sơ mi ngắn tay cổ sen đính nơ', link: 'aosominhattaycosendinhno.html', category: 'ao', price: '290,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+sơ+mi+ngắn+tay+cổ+sen+đính+nơ' },
+      { name: 'áo sơ mi ngắn tay rút eo trắng', link: 'aosominhattayruteotrang.html', category: 'ao', price: '280,000 VND', image: 'https://via.placeholder.com/400x400?text=Áo+sơ+mi+ngắn+tay+rút+eo+trắng' },
+      { name: 'Kính mát dáng chữ nhật retro Joy màu kem', link: 'kinhmatdangchunhatretrojoymaukem.html', category: 'phu-kien', price: '150,000 VND', image: 'https://via.placeholder.com/400x400?text=Kính+mát+dáng+chữ+nhật+retro+Joy+màu+kem' },
+      { name: 'Kính mát dáng chữ nhật Zeyda', link: 'kinhmatdangchunhatzeyda.html', category: 'phu-kien', price: '140,000 VND', image: 'https://via.placeholder.com/400x400?text=Kính+mát+dáng+chữ+nhật+Zeyda' },
+      { name: 'Kính mát dáng oval Fio', link: 'kinhmatdangovalfio.html', category: 'phu-kien', price: '130,000 VND', image: 'https://via.placeholder.com/400x400?text=Kính+mát+dáng+oval+Fio' },
+      { name: 'Kính mát dáng vuông Sharon trắng', link: 'kinhmatdangvuongsharontrang.html', category: 'phu-kien', price: '140,000 VND', image: 'https://via.placeholder.com/400x400?text=Kính+mát+dáng+vuông+Sharon+trắng' },
+      { name: 'Kính mát dáng vuông Sharon xanh olive', link: 'kinhmatdangvuongsharonxanholive.html', category: 'phu-kien', price: '140,000 VND', image: 'https://via.placeholder.com/400x400?text=Kính+mát+dáng+vuông+Sharon+xanh+olive' },
+      { name: 'Kính mát dáng wayfarer Helen', link: 'kinhmatdangwayfarerhelen.html', category: 'phu-kien', price: '150,000 VND', image: 'https://via.placeholder.com/400x400?text=Kính+mát+dáng+wayfarer+Helen' },
+      { name: 'mũ cói', link: 'mucoi.html', category: 'phu-kien', price: '100,000 VND', image: 'https://via.placeholder.com/400x400?text=Mũ+cói' },
+      { name: 'mũ lưỡi chai', link: 'muluoichai.html', category: 'phu-kien', price: '90,000 VND', image: 'https://via.placeholder.com/400x400?text=Mũ+lưỡi+chai' },
+      { name: 'mũ lưỡi trai chữ G', link: 'muluoitraichug.html', category: 'phu-kien', price: '110,000 VND', image: 'https://via.placeholder.com/400x400?text=Mũ+lưỡi+trai+chữ+G' },
+      { name: 'mũ lưỡi trai good', link: 'muluoitraigood.html', category: 'phu-kien', price: '100,000 VND', image: 'https://via.placeholder.com/400x400?text=Mũ+lưỡi+trai+good' },
+      { name: 'mũ vintage', link: 'muvintage.html', category: 'phu-kien', price: '120,000 VND', image: 'https://via.placeholder.com/400x400?text=Mũ+vintage' },
+    
+     
+
+
+    { name: 'đầm body len tăm cổ chữ v', link: 'dambodylentamcochuv.html', category: 'dam', price: '315,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+body+len+tăm+cổ+chữ+v' },
+{ name: 'đầm bồng ngực đính đá hai nơ', link: 'dambongngucdinhdahaino.html', category: 'dam', price: '540,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+bồng+ngực+đính+đá+hai+nơ' },
+{ name: 'đầm cổ vuông tay bo chun xòe đính đá', link: 'damcovuongtaybochunxoedinhda.html', category: 'dam', price: '599,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+cổ+vuông+tay+bo+chun+xòe+đính+đá' },
+{ name: 'đầm cổ vuông trang trí chữ v tay voan', link: 'damcovuongtrangtrichuvtayvoan.html', category: 'dam', price: '499,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+cổ+vuông+trang+trí+chữ+v+tay+voan' },
+{ name: 'đầm dạ liền thân xẻ vai đính nơ', link: 'damdalienthanxevaiđinhno.html', category: 'dam', price: '1,002,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+dạ+liền+thân+xẻ+vai+đính+nơ' },
+{ name: 'đầm dài tay cổ tròn đính nơ ngực', link: 'damdaitaycotronđinhnonguc.html', category: 'dam', price: '780,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+dài+tay+cổ+tròn+đính+nơ+ngực' },
+{ name: 'đầm dài tay dáng vest xòe nhẹ xếp ly', link: 'damdaitaydangvestxoenhẹxeply.html', category: 'dam', price: '416,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+dài+tay+dáng+vest+xòe+nhẹ+xếp+ly' },
+{ name: 'đầm dài tay kẻ vạt kèm gile dài', link: 'damdaitaykevatkemgiledai.html', category: 'dam', price: '292,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+dài+tay+kẻ+vạt+kèm+gile+dài' },
+{ name: 'đầm dài tay nhún ngực tiểu thư', link: 'damdaitaynhunnguctieuthu.html', category: 'dam', price: '410,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+dài+tay+nhún+ngực+tiểu+thư' },
+{ name: 'đầm dáng dài ôm eo nơ cổ', link: 'damdangdaiomeonoco.html', category: 'dam', price: '445,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+dáng+dài+ôm+eo+nơ+cổ' },
+{ name: 'đầm dáng vest chân xòe nhẹ', link: 'damdangvestchanxoenhẹ.html', category: 'dam', price: '580,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+dáng+vest+chân+xòe+nhẹ' },
+{ name: 'đầm đen đính sao', link: 'damdendinhsao.html', category: 'dam', price: '593,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+đen+đính+sao' },
+{ name: 'đầm hai dây cài cúc túi sườn', link: 'damhaidaycaicuctuisuon.html', category: 'dam', price: '382,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+hai+dây+cài+cúc+túi+sườn' },
+{ name: 'đầm hồng dây nơ ngang ngực', link: 'damhongdaynongangnguc.html', category: 'dam', price: '623,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+hồng+dây+nơ+ngang+ngực' },
+{ name: 'đầm len dài tay cổ tròn giọt lệ xẻ tà sau', link: 'damlendaitaycotrongiotlexeta.html', category: 'dam', price: '716,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+len+dài+tay+cổ+tròn+giọt+lệ+xẻ+tà+sau' },
+{ name: 'đầm len dài tay ôm body phối viền eo', link: 'damlendaitayombodyphoivieneo.html', category: 'dam', price: '374,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+len+dài+tay+ôm+body+phối+viền+eo' },
+{ name: 'đầm len dài tay phối cổ áo sơ mi', link: 'damlendaitayphoiocoaosomi.html', category: 'dam', price: '285,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+len+dài+tay+phối+cổ+áo+sơ+mi' },
+{ name: 'đầm len liền thân dây rút nhỏ', link: 'damlenlienthandayrutnho.html', category: 'dam', price: '319,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+len+liền+thân+dây+rút+nhỏ' },
+{ name: 'đầm ngắn tay bồng bềnh đính nơ', link: 'damngantaybongbenhdinhno.html', category: 'dam', price: '702,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+ngắn+tay+bồng+bềnh+đính+nơ' },
+{ name: 'đầm ngắn tay cổ tròn dáng xòe', link: 'damngantaycotrongdangxoe.html', category: 'dam', price: '585,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+ngắn+tay+cổ+tròn+dáng+xòe' },
+{ name: 'đầm ngắn tay cổ vuông đính đá đen', link: 'damngantaycovuongdinhdaden.html', category: 'dam', price: '520,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+ngắn+tay+cổ+vuông+đính+đá+đen' },
+{ name: 'đầm ngắn tay dáng ngắn vai đính nơ', link: 'damngantaydangnganvaidinhno.html', category: 'dam', price: '524,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+ngắn+tay+dáng+ngắn+vai+đính+nơ' },
+{ name: 'đầm ngắn tay phối sơ mi', link: 'damngantayphoisomi.html', category: 'dam', price: '567,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+ngắn+tay+phối+sơ+mi' },
+{ name: 'đầm ngắn tay phong cách nàng thơ', link: 'damngantayphongcachnangtho.html', category: 'dam', price: '577,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+ngắn+tay+phong+cách+nàng+thơ' },
+{ name: 'đầm ngắn tay phong cách tiểu thư', link: 'damngantayphongcachtieuthu.html', category: 'dam', price: '459,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+ngắn+tay+phong+cách+tiểu+thư' },
+{ name: 'đầm phối ren tầng xếp nếp', link: 'damphoirentangxepnep.html', category: 'dam', price: '472,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+phối+ren+tầng+xếp+nếp' },
+{ name: 'đầm phong cách công sở', link: 'damphongcachcongso.html', category: 'dam', price: '575,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+phong+cách+công+sở' },
+{ name: 'Đầm sơ mi cổ đức đắp ren hoa, dúm cửa tay với eo', link: 'damsomicoducdaprenhoadumtayvoieo.html', category: 'dam', price: '382,000 VND', image: 'https://via.placeholder.com/400x400?text=Đầm+sơ+mi+cổ+đức+đắp+ren+hoa,+dúm+cửa+tay+với+eo' },
+{ name: 'đầm suông cộc tay đen', link: 'damsuongcoctayden.html', category: 'dam', price: '232,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+suông+cộc+tay+đen' },
+{ name: 'đầm suông dài tay cổ v trắng', link: 'damsuongdaitaycovtrang.html', category: 'dam', price: '283,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+suông+dài+tay+cổ+v+trắng' },
+{ name: 'đầm trễ 2 dây có viền', link: 'damtre2daycovien.html', category: 'dam', price: '493,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+trễ+2+dây+có+viền' },
+{ name: 'đầm trễ vai phối nơ trắng tay loe', link: 'damtrevaiphoinotrangtayloe.html', category: 'dam', price: '409,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+trễ+vai+phối+nơ+trắng+tay+loe' },
+{ name: 'đầm trễ vai tay bồng ôm eo', link: 'damtrevaitaybongomeo.html', category: 'dam', price: '900,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+trễ+vai+tay+bồng+ôm+eo' },
+{ name: 'đầm trơn kèm áo gile có túi', link: 'damtronkemgilecotui.html', category: 'dam', price: '535,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+trơn+kèm+áo+gile+có+túi' },
+{ name: 'đầm xanh bồng tay có bèo', link: 'damxanhbongtaycobeo.html', category: 'dam', price: '725,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+xanh+bồng+tay+có+bèo' },
+{ name: 'đầm xếp li nơ trước ngực', link: 'damxeplinotruocnguc.html', category: 'dam', price: '635,000 VND', image: 'https://via.placeholder.com/400x400?text=đầm+xếp+li+nơ+trước+ngực' },
+{ name: 'set đầm len công chúa kèm gile ngoài đen', link: 'setdamlencongchuakemgileden.html', category: 'dam', price: '515,000 VND', image: 'https://via.placeholder.com/400x400?text=set+đầm+len+công+chúa+kèm+gile+ngoài+đen' },
+{ name: 'túi bò', link: 'tuibo.html', category: 'tui', price: '129,000 VND', image: 'https://via.placeholder.com/400x400?text=túi+bò' },
+{ name: 'túi đeo vai trang trí khối nổi', link: 'tuideovaitrangtrikhoinoi.html', category: 'tui', price: '977,000 VND', image: 'https://via.placeholder.com/400x400?text=túi+đeo+vai+trang+trí+khối+nổi' },
+{ name: 'túi thổ cẩm', link: 'tuithocam.html', category: 'tui', price: '699,000 VND', image: 'https://via.placeholder.com/400x400?text=túi+thổ+cẩm' },
+{ name: 'Túi xách tay nắp gập ngăn đôi nhấn khóa xoay', link: 'tuixachtaynapsapnganpainhankoay.html', category: 'tui', price: '1,006,000 VND', image: 'https://via.placeholder.com/400x400?text=Túi+xách+tay+nắp+gập+ngăn+đôi+nhấn+khóa+xoay' },
+    ];
+
+
+    // Hiện/ẩn thanh tìm kiếm
+    function toggleSearch() {
+      const searchBar = document.getElementById('searchBar');
+      searchBar.classList.toggle('hidden');
+      document.getElementById('searchResults').style.display = 'none';
+    }
+
+    // Hiện/ẩn menu mobile
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById('mobileMenu');
+      mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // Tìm kiếm
+    function performSearch() {
+      const query = document.getElementById('searchInput').value;
+      if (query) {
+        window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+      }
+    }
+
+    // Tìm kiếm động
+    document.getElementById('searchInput').addEventListener('input', function() {
+      let query = this.value.trim().replace(/\s+/g, ' ').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      const results = document.getElementById('searchResults');
+      results.innerHTML = '';
+      if (query) {
+        const filteredProducts = products.filter(product => {
+          const normalizedProductName = product.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ');
+          return normalizedProductName.includes(query);
+        });
+        if (filteredProducts.length > 0) {
+          filteredProducts.forEach(product => {
+            const div = document.createElement('a');
+            div.href = product.link;
+            div.textContent = product.name;
+            results.appendChild(div);
+          });
+          results.style.display = 'block';
+        } else {
+          results.innerHTML = '<div class="p-2 text-gray-500">Không tìm thấy sản phẩm</div>';
+          results.style.display = 'block';
+        }
+      } else {
+        results.style.display = 'none';
+      }
+    });
+
+    // Cuộn mượt mà cho các liên kết
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

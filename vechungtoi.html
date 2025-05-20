@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Về chúng tôi - Mặt Trời Nhỏ</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            color: #333;
+        }
+        header {
+            background-color: transparent;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+        }
+        .logo img {
+            height: 40px;
+        }
+        .hamburger {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #374151;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: #2563eb;
+        }
+        .icons {
+            display: flex;
+            gap: 15px;
+        }
+        .icons img {
+            width: 24px;
+            height: 24px;
+            transition: transform 0.3s;
+        }
+        .icons img:hover {
+            transform: scale(1.1);
+        }
+        #searchBar {
+            background-color: #f3f4f6;
+            padding: 10px;
+            display: none;
+            position: relative;
+        }
+        #searchBar input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px 0 0 4px;
+            font-size: 14px;
+        }
+        #searchBar button {
+            background-color: #3b82f6;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #searchBar button:hover {
+            background-color: #2563eb;
+        }
+        #mobileMenu {
+            display: none;
+            background-color: #fff;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        #mobileMenu a {
+            display: block;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #374151;
+        }
+        #mobileMenu a:hover {
+            background-color: #f3f4f6;
+            color: #2563eb;
+        }
+        .content-section {
+            padding: 80px 20px 40px;
+            background-color: #fff7f7;
+        }
+        .content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .content h2 {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .content p.tagline {
+            text-align: center;
+            font-style: italic;
+            color: #e67373;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+        hr {
+            margin: 30px 0;
+            border: none;
+            border-top: 2px dashed #f3bcbc;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h3 {
+            color: #d94c4c;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        .section p, .section ul {
+            line-height: 1.8;
+            font-size: 1em;
+        }
+        .section ul {
+            padding-left: 20px;
+        }
+        .section ul li {
+            margin-bottom: 10px;
+        }
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+            nav {
+                display: none;
+            }
+            .icons {
+                gap: 10px;
+            }
+            #mobileMenu.active {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="trangchulon.html" class="logo">
+                    <img src="logoo.png" alt="Mặt Trời Nhỏ Logo">
+                </a>
+                <div class="hamburger" onclick="toggleMobileMenu()">☰</div>
+                <nav>
+                    <a href="trangchucuoi.html">Trang chủ</a>
+                    <a href="vechungtoi.html">Về chúng tôi</a>
+                    <a href="sanphamchuan.html">Danh mục sản phẩm</a>
+                      <a href="lienhe.html">Liên hệ</a>
+                </nav>
+                <div class="icons">
+                  
+                    <a href="dangnhap.html">
+                        <img src="taikhoan.png" alt="Tài khoản">
+                    </a>
+                    <a href="lienhe.html" target="_blank">
+                        <img src="mess.png" alt="Liên hệ">
+                    </a>
+                    <a href="cart.html">
+                        <img src="giohangg.png" alt="Giỏ hàng">
+                    </a>
+                </div>
+            </div>
+            <div id="searchBar" class="search-bar">
+                <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm...">
+                <button onclick="performSearch()">Tìm</button>
+                <div id="searchResults"></div>
+            </div>
+            <div id="mobileMenu" class="mobile-menu">
+                <a href="trangchulon.html">Trang chủ</a>
+                <a href="vechungtoi.html">Về chúng tôi</a>
+                <a href="sanphamchuan.html">Danh mục sản phẩm</a>
+                <a href="lienhe.html">Liên hệ</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="content-section">
+        <div class="content">
+            <h2>🌞 ĐỊNH HƯỚNG & MONG MUỐN PHÁT TRIỂN</h2>
+            <p class="tagline">Mặt Trời Nhỏ – Rực rỡ theo cách của bạn</p>
+            <hr>
+            <div class="section">
+                <h3>💡 Sứ mệnh</h3>
+                <p>Mang đến thời trang không chỉ đẹp mà còn truyền cảm hứng, giúp phái đẹp tự tin thể hiện cá tính và tỏa sáng mỗi ngày.</p>
+            </div>
+            <div class="section">
+                <h3>🚀 Định hướng phát triển</h3>
+                <ul>
+                    <li><strong>Đa dạng hóa sản phẩm:</strong> Thiết kế nhiều phong cách nữ tính, thanh lịch, trẻ trung, phù hợp với cuộc sống hiện đại.</li>
+                    <li><strong>Bắt kịp xu hướng:</strong> Luôn cập nhật nhanh các trào lưu thời trang, kết hợp với dấu ấn riêng của thương hiệu.</li>
+                    <li><strong>Phát triển hệ thống:</strong> Mở rộng cửa hàng và nâng cao trải nghiệm mua sắm trực tuyến – dễ dàng, tiện lợi, an tâm.</li>
+                    <li><strong>Xây dựng cộng đồng:</strong> Tạo không gian để phụ nữ chia sẻ phong cách sống, lan tỏa năng lượng tích cực và yêu thương bản thân.</li>
+                </ul>
+            </div>
+            <div class="section">
+                <h3>🌱 Mong muốn</h3>
+                <p>Trở thành thương hiệu thời trang được phụ nữ Việt tin tưởng và đồng hành lâu dài – nơi tôn vinh <strong>những bông hoa đẹp nhất của cuộc sống</strong>.</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('active');
+        }
+
+        function toggleSearch() {
+            const searchBar = document.getElementById('searchBar');
+            searchBar.classList.toggle('hidden');
+        }
+
+        function performSearch() {
+            const query = document.getElementById('searchInput').value;
+            const resultsDiv = document.getElementById('searchResults');
+            resultsDiv.innerHTML = `<p>Kết quả tìm kiếm cho: ${query}</p>`;
+            // Add actual search logic here
+        }
+    </script>
+</body>
+</html>
