@@ -20,7 +20,7 @@
       left: 0;
       right: 0;
       height: 60px;
-      z-index: 50;
+      z-index: 1000;
     }
     .search-bar {
       display: none;
@@ -30,7 +30,107 @@
       right: 0;
       background: #f3f4f6;
       padding: 10px;
-      z-index: 40;
+      z-index: 995;
+    }
+    .hamburger {
+      display: none;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 6px;
+    }
+    #mobileMenu {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background: white;
+      z-index: 990;
+      padding: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    #mobileMenu a {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 10px;
+      margin: 5px 0;
+      border: none;
+      background: none;
+      text-decoration: none;
+      color: #374151;
+    }
+    #mobileMenu a:hover {
+      color: #2563eb;
+    }
+    .mobile-filter-bar {
+      display: none;
+      position: fixed;
+      top: 50px;
+      left: 0;
+      right: 0;
+      background: #fff;
+      padding: 10px;
+      z-index: 980;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      align-items: center;
+      justify-content: space-between;
+    }
+    .filter-button {
+      display: inline-flex;
+      align-items: center;
+      background-color: #e5e7eb;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .filter-button:hover {
+      background-color: #d1d5db;
+    }
+    .filter-button .arrow {
+      margin-left: 8px;
+      transition: transform 0.3s ease;
+    }
+    .filter-button.active .arrow {
+      transform: rotate(180deg);
+    }
+    .filter-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 10px;
+      z-index: 985;
+      min-width: 150px;
+    }
+    .filter-dropdown.show {
+      display: block;
+    }
+    .filter-dropdown div {
+      padding: 8px;
+      cursor: pointer;
+    }
+    .filter-dropdown div:hover {
+      background-color: #f3f4f6;
+    }
+    .reset-filter-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      background-color: #ef4444;
+      color: white;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .reset-filter-button:hover {
+      background-color: #dc2626;
     }
     .container {
       display: flex;
@@ -83,19 +183,20 @@
     .product-card {
       width: 30%;
       margin: 10px;
-      padding: 10px;
+      padding: 0; /* Loại bỏ padding để ảnh lấp đầy */
       border: 1px solid #e5e7eb;
       text-align: center;
       display: inline-block;
       vertical-align: top;
       text-decoration: none;
       color: inherit;
+      box-sizing: border-box;
     }
     .product-card img {
       width: 100%;
-      height: auto;
-      max-height: 150px;
-      object-fit: contain;
+      height: 150px;
+      object-fit: contain; /* Giữ tỷ lệ ảnh trên desktop */
+      display: block; /* Loại bỏ khoảng trống dưới ảnh */
     }
     .product-card:hover {
       background-color: #f3f4f6;
@@ -109,8 +210,13 @@
       border: 1px solid #e5e7eb;
       max-height: 300px;
       overflow-y: auto;
-      z-index: 100;
+      z-index: 1000;
       display: none;
+    }
+    .product-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
     }
     #searchResults a {
       display: block;
@@ -125,23 +231,61 @@
     }
     @media (max-width: 768px) {
       body {
-        padding-top: 50px; /* Điều chỉnh padding-top cho mobile */
+        padding-top: 100px; /* Điều chỉnh để tránh bị header và filter bar che */
       }
       .header {
         height: 50px;
       }
+      .hamburger {
+        display: block;
+      }
+      nav {
+        display: none !important; /* Ẩn menu desktop trên mobile */
+      }
+      #mobileMenu {
+        display: none; /* Ẩn menu mobile theo mặc định */
+      }
+      #mobileMenu.show {
+        display: block; /* Hiển thị khi được toggle */
+      }
+      .mobile-filter-bar {
+        display: flex;
+      }
       .container {
         flex-direction: column;
       }
-      .left-block, .right-block {
+      .left-block {
+        display: none; /* Ẩn left-block trên mobile */
+      }
+      .right-block {
         width: 100%;
       }
+      .product-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
       .product-card {
-        width: 45%;
+        width: calc(50% - 10px); /* Hai sản phẩm một hàng, trừ margin */
+        margin: 5px;
+        padding: 0; /* Loại bỏ padding trên mobile */
+      }
+      .product-card img {
+        width: 100%;
+        height: 200px; /* Chiều cao cố định cho mobile */
+        object-fit: cover; /* Ảnh lấp đầy khung */
       }
       #searchResults {
         width: 90%;
         margin: 0 auto;
+      }
+      .search-bar {
+        top: 100px; /* Đặt dưới mobile filter bar */
+      }
+    }
+    @media (min-width: 769px) {
+      .mobile-filter-bar {
+        display: none !important; /* Ẩn filter bar trên desktop */
       }
     }
   </style>
@@ -151,16 +295,18 @@
   <header class="header p-4 flex items-center justify-between">
     <a href="trangchulon.html" class="logo">
       <img src="logoo.png" alt="Logo" class="h-10">
-    <nav class="flex space-x-4">
+    </a>
+    <div class="hamburger" onclick="toggleMobileMenu()">☰</div>
+    <nav class="hidden md:flex space-x-4">
       <a href="trangchucuoi.html" class="text-gray-700 hover:text-blue-600">Trang chủ</a>
       <a href="vechungtoi.html" class="text-gray-700 hover:text-blue-600">Về chúng tôi</a>
       <a href="sanphamchuan.html" class="text-gray-700 hover:text-blue-600">Danh mục hàng</a>
       <a href="lienhe.html" class="text-gray-700 hover:text-blue-600">Liên hệ</a>
     </nav>
     <div class="flex space-x-4">
-       <button onclick="toggleSearch()" class="ml-4">
-      <img src="timkiem.png" alt="Search" class="w-6 h-6 100%"></img>
-    </button>
+      <button onclick="toggleSearch()" class="ml-4">
+        <img src="timkiem.png" alt="Search" class="w-6 h-6">
+      </button>
       <a href="dangnhap.html">
         <img src="taikhoan.png" alt="Login" class="w-6 h-6">
       </a>
@@ -171,7 +317,42 @@
         <img src="giohangg.png" alt="Cart" class="w-6 h-6">
       </a>
     </div>
+    <div id="mobileMenu" class="hidden md:hidden">
+      <a href="trangchucuoi.html" class="text-gray-700 hover:text-blue-600 block p-2">Trang chủ</a>
+      <a href="vechungtoi.html" class="text-gray-700 hover:text-blue-600 block p-2">Về chúng tôi</a>
+      <a href="sanphamchuan.html" class="text-gray-700 hover:text-blue-600 block p-2">Danh mục hàng</a>
+      <a href="lienhe.html" class="text-gray-700 hover:text-blue-600 block p-2">Liên hệ</a>
+    </div>
   </header>
+
+  <!-- Mobile Filter Bar -->
+  <div class="mobile-filter-bar">
+    <div class="relative">
+      <div class="filter-button" onclick="toggleFilterDropdown('price')">
+        <span id="priceFilterLabel">Mức giá</span>
+        <span class="arrow">▼</span>
+      </div>
+      <div id="priceFilterDropdown" class="filter-dropdown">
+        <div onclick="toggleFilter('price', '0-200000', this)">0 - 200.000</div>
+        <div onclick="toggleFilter('price', '200000-500000', this)">200.000 - 500.000</div>
+        <div onclick="toggleFilter('price', '500000-1000000', this)">500.000 - 1.000.000</div>
+        <div onclick="toggleFilter('price', '1000000-2000000', this)">1.000.000 - 2.000.000</div>
+      </div>
+    </div>
+    <div class="reset-filter-button" onclick="resetFilter()">X</div>
+    <div class="relative">
+      <div class="filter-button" onclick="toggleFilterDropdown('category')">
+        <span id="categoryFilterLabel">Danh mục sản phẩm</span>
+        <span class="arrow">▼</span>
+      </div>
+      <div id="categoryFilterDropdown" class="filter-dropdown">
+        <div onclick="toggleFilter('category', 'ao', this)">Áo</div>
+        <div onclick="toggleFilter('category', 'vay', this)">Váy</div>
+        <div onclick="toggleFilter('category', 'quan', this)">Quần</div>
+        <div onclick="toggleFilter('category', 'phukien', this)">Phụ kiện</div>
+      </div>
+    </div>
+  </div>
 
   <!-- Thanh tìm kiếm -->
   <div id="searchBar" class="search-bar">
@@ -223,9 +404,9 @@
     </div>
 
     <div class="right-block">
-      <div id="productList">
+      <div id="productList" class="product-list">
         <!-- Products -->
-        <a href="quần jeans dài cạp đính nhiều cúc gập gấu 512.html" class="product-card"> <img src="quần jeans dài cạp đính nhiều cúc gập gấu 512.png" alt="quần jeans dài cạp đính nhiều cúc gập gấu 512"> <h4 class="mt-2">Quần jeans dài cạp đính nhiều cúc gập gấu </h4> <p>512.000 VNĐ</p> </a>
+          <a href="quần jeans dài cạp đính nhiều cúc gập gấu 512.html" class="product-card"> <img src="quần jeans dài cạp đính nhiều cúc gập gấu 512.png" alt="quần jeans dài cạp đính nhiều cúc gập gấu 512"> <h4 class="mt-2">Quần jeans dài cạp đính nhiều cúc gập gấu </h4> <p>512.000 VNĐ</p> </a>
         <a href="aohaidaydangyemnau.html" class="product-card">
    <img src="áo hai dây dạng yếm nâu 165.png" alt="áo hai dây dạng yếm nâu">
    <h4 class="mt-2">áo hai dây dạng yếm nâu</h4>
@@ -1016,6 +1197,23 @@
       document.getElementById('searchResults').style.display = 'none';
     }
 
+    // Hiện/ẩn menu mobile
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById('mobileMenu');
+      mobileMenu.classList.toggle('show');
+    }
+
+    // Hiện/ẩn dropdown lọc trên mobile
+    function toggleFilterDropdown(type) {
+      const dropdown = document.getElementById(`${type}FilterDropdown`);
+      const isVisible = dropdown.classList.contains('show');
+      // Ẩn tất cả dropdown trước khi toggle
+      document.querySelectorAll('.filter-dropdown').forEach(d => d.classList.remove('show'));
+      if (!isVisible) {
+        dropdown.classList.add('show');
+      }
+    }
+
     // Thực hiện tìm kiếm
     function performSearch() {
       const searchInput = document.getElementById('searchInput');
@@ -1076,6 +1274,9 @@
           product.style.display = 'none';
         }
       });
+      // Cập nhật nhãn trên mobile
+      document.getElementById('priceFilterLabel').textContent = range.replace('-', ' - ');
+      document.querySelectorAll('.filter-dropdown').forEach(d => d.classList.remove('show'));
     }
 
     // Lọc theo danh mục
@@ -1095,6 +1296,9 @@
           product.style.display = 'none';
         }
       });
+      // Cập nhật nhãn trên mobile
+      document.getElementById('categoryFilterLabel').textContent = category.charAt(0).toUpperCase() + category.slice(1);
+      document.querySelectorAll('.filter-dropdown').forEach(d => d.classList.remove('show'));
     }
 
     // Hiển thị lại tất cả sản phẩm
@@ -1103,30 +1307,40 @@
       products.forEach(product => {
         product.style.display = 'inline-block';
       });
+      // Đặt lại nhãn trên mobile
+      document.getElementById('priceFilterLabel').textContent = 'Mức giá';
+      document.getElementById('categoryFilterLabel').textContent = 'Danh mục sản phẩm';
+      // Ẩn tất cả dropdown
+      document.querySelectorAll('.filter-dropdown').forEach(d => d.classList.remove('show'));
+      // Ẩn tất cả chữ X trên desktop
+      document.querySelectorAll('.reset-x').forEach(x => {
+        x.style.display = 'none';
+      });
     }
 
     // Xử lý nhấp vào ô lọc (toggle giữa lọc và đặt lại)
     function toggleFilter(type, value, element) {
       const resetX = element.querySelector('.reset-x');
-      const isActive = resetX.style.display === 'block';
+      const isActive = resetX ? resetX.style.display === 'block' : false;
 
-      // Ẩn tất cả chữ X trước khi xử lý
+      // Ẩn tất cả chữ X trên desktop
       document.querySelectorAll('.reset-x').forEach(x => {
         x.style.display = 'none';
       });
 
       if (isActive) {
-        // Nếu đã lọc, nhấp lần 2 sẽ đặt lại
+        // Nếu đã lọc, nhấp lần 2 sẽ đặt lại (desktop)
         resetFilter();
-        resetX.style.display = 'none';
       } else {
-        // Nếu chưa lọc, thực hiện lọc và hiển thị chữ X
+        // Thực hiện lọc
         if (type === 'price') {
           filterPrice(value);
         } else if (type === 'category') {
           filterCategory(value);
         }
-        resetX.style.display = 'block';
+        if (resetX) {
+          resetX.style.display = 'block';
+        }
       }
     }
 
