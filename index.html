@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trang chủ - Mặt Trời Nhỏ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Ẩn thanh cuộn nhưng vẫn cho phép cuộn */
+    body {
+      margin: 0;
+      overflow-x: hidden;
+    }
+    /* Ảnh toàn màn hình */
+    .fullscreen-img {
+      height: 100vh;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Định nghĩa ảnh cho desktop */
+    .fullscreen-img.img-1 {
+      background-image: url('https://pos.nvncdn.com/b153ea-53436/bn/20250516_mLI4iJXV.gif');
+    }
+    .fullscreen-img.img-2 {
+      background-image: url('https://pos.nvncdn.com/b153ea-53436/bn/20250313_3HQncNAB.gif');
+    }
+    .fullscreen-img.img-3 {
+      background-image: url('https://media.routine.vn/1920x0/prod/media/cfl-nu-pc-png-2prq.webp');
+    }
+    .fullscreen-img.img-4 {
+      background-image: url('https://media.routine.vn/1920x0/prod/media/cover-fb-slimme-vm-web-1-png-bp37.webp');
+    }
+    /* Popup danh mục */
+    #categoryPopup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      transform: translateY(-100%);
+      transition: transform 0.3s ease;
+      z-index: 100;
+    }
+    #categoryPopup.open {
+      transform: translateY(0);
+    }
+    /* Scroll snap cho section home */
+    #home {
+      scroll-snap-type: y mandatory;
+      overflow-y: scroll;
+      height: 100vh;
+      scroll-behavior: smooth;
+    }
+    #home a {
+      scroll-snap-align: start;
+    }
+    /* Ẩn thanh cuộn nhưng vẫn cho phép cuộn */
+    #home::-webkit-scrollbar {
+      display: none;
+    }
+    #home {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    /* Gạch dưới cho menu active */
+    nav a.active {
+      border-bottom: 2px solid #2563eb;
+      padding-bottom: 2px;
+    }
+    /* Nút đóng popup */
+    #closePopup {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #374151;
+    }
+    #closePopup:hover {
+      color: #2563eb;
+    }
+    /* Menu hamburger */
+    .hamburger {
+      display: none;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 6px;
+    }
+    #mobileMenu {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background: white;
+      z-index: 50;
+      padding: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    #mobileMenu a, #mobileMenu button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 10px;
+      margin: 5px 0;
+      border: none;
+      background: none;
+      text-decoration: none;
+      color: #374151;
+    }
+    #mobileMenu a:hover, #mobileMenu button:hover {
+      color: #2563eb;
+    }
+    /* Header-specific styles */
+    header .icons img {
+      width: 24px;
+      height: 24px;
+      transition: transform 0.3s;
+    }
+    header .icons img:hover {
+      transform: scale(1.1);
+    }
+    #searchBar input {
+      border: 1px solid #d1d5db;
+      border-radius: 4px 0 0 4px;
+      font-size: 14px;
+    }
+    #searchBar button {
+      border-radius: 0 4px 4px 0;
+    }
+    /* Responsive Design */
+    @media (max-width: 767px) {
+      .hamburger {
+        display: block;
+      }
+      nav {
+        display: none !important; /* Đảm bảo ẩn hoàn toàn thẻ nav */
+      }
+      header .container {
+        flex-direction: row;
+        padding: 10px;
+      }
+      header .flex.items-center.space-x-4 {
+        flex-direction: row;
+        justify-content: center;
+      }
+      #searchBar {
+        flex-direction: column;
+        width: 90%;
+        margin: 0 auto;
+      }
+      #searchBar input {
+        width: 100%;
+        margin-bottom: 10px;
+        border-radius: 4px;
+      }
+      #searchBar button {
+        width: 100%;
+        border-radius: 4px;
+      }
+      #categoryPopup .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .fullscreen-img {
+        height: 50vh;
+      }
+      /* Replace images for mobile */
+       .fullscreen-img:nth-child(1) {
+        background-image: url('https://pos.nvncdn.com/b153ea-53436/ps/20250516_uWLPAY5Aem.jpeg');
+      }
+      .fullscreen-img:nth-child(2) {
+        background-image: url('https://scontent.fhan5-10.fna.fbcdn.net/v/t39.30808-6/489782991_1088553106632143_6732529355579653954_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeF519ccmfwkzne9k9vVmmN1OKC9lYmTjNE4oL2ViZOM0QiigvfyY7DjY8c2SC7lk2-NPM5YpM6f4jAP8NexLigO&_nc_ohc=mD88x8cOhOoQ7kNvwGOaG_K&_nc_oc=Adl18HgiQpomXISxM-brkKXx8VpIE8IkiVX8ZtBn8J10mMTvQOXs6TUZ3IOeGRxDGAc&_nc_zt=23&_nc_ht=scontent.fhan5-10.fna&_nc_gid=omofFpQx-yc0E5J-FgaUoQ&oh=00_AfLe5RGtUo6OHtbt2ygU4N8uxnqLG20GhGenH1uNEzsuhQ&oe=6831BDEC');
+      }
+      .fullscreen-img:nth-child(3) {
+        background-image: url('https://media.routine.vn/1200x1500/prod/product/10s25tss048-matcha-latte-5-jpg-q7tp.webp');
+      }
+      .fullscreen-img:nth-child(4) {
+        background-image: url('https://media.routine.vn/1200x1500/prod/product/10s25tssw006-green-1-jpg-ismh.webp');
+      }
+    }
+    @media (min-width: 768px) and (max-width: 1024px) {
+      header .container {
+        padding: 15px;
+      }
+      #categoryPopup .grid {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+      .fullscreen-img {
+        height: 70vh;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="bg-transparent fixed top-0 left-0 right-0 z-50">
+    <div class="container mx-auto px-4">
+      <div class="header-content flex items-center justify-between py-4">
+        <a href="trangchulon.html" class="logo">
+          <img src="logoo.png" alt="Mặt Trời Nhỏ Logo" class="h-10">
+        </a>
+        <div class="hamburger" onclick="toggleMobileMenu()">☰</div>
+        <nav class="flex items-center space-x-6">
+          <a href="trangchucuoi.html" class="text-gray-700 hover:text-blue-600 active">Trang chủ</a>
+          <a href="vechungtoi.html" class="text-gray-700 hover:text-blue-600">Về chúng tôi</a>
+          <a href="sanphamchuan.html" class="text-gray-700 hover:text-blue-600">Danh mục sản phẩm</a>
+          <a href="lienhe.html" class="text-gray-700 hover:text-blue-600">Liên hệ</a>
+        </nav>
+        <div class="icons flex items-center space-x-4">
+          <button onclick="toggleSearch()">
+            <img src="timkiem.png" alt="Tìm kiếm" class="icon-zoom">
+          </button>
+          <a href="dangnhap.html">
+            <img src="taikhoan.png" alt="Tài khoản">
+          </a>
+          <a href="lienhe.html" target="_blank">
+            <img src="mess.png" alt="Liên hệ">
+          </a>
+          <a href="cart.html">
+            <img src="giohangg.png" alt="Giỏ hàng">
+          </a>
+        </div>
+      </div>
+      <div id="searchBar" class="bg-gray-100 p-4 hidden flex items-center">
+        <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..." class="w-full p-2">
+        <button onclick="performSearch()" class="bg-blue-500 text-white px-4 py-2 hover:bg-blue-600">Tìm</button>
+        <div id="searchResults"></div>
+      </div>
+      <div id="mobileMenu" class="mobile-menu">
+        <a href="trangchucuoi.html" class="text-gray-700 hover:text-blue-600">Trang chủ</a>
+        <a href="vechungtoi.html" class="text-gray-700 hover:text-blue-600">Về chúng tôi</a>
+        <a href="sanphamchuan.html" class="text-gray-700 hover:text-blue-600">Danh mục sản phẩm</a>
+        <a href="lienhe.html" class="text-gray-700 hover:text-blue-600">Liên hệ</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Nội dung chính -->
+  <main>
+    <!-- Trang chủ: 4 ảnh toàn màn hình -->
+    <section id="home">
+      <a href="#" class="fullscreen-img img-1"></a>
+      <a href="#" class="fullscreen-img img-2"></a>
+      <a href="#" class="fullscreen-img img-3"></a>
+      <a href="#" class="fullscreen-img img-4"></a>
+    </section>
+
+    <!-- Về chúng tôi -->
+    <section id="about" class="py-16 bg-gray-100 hidden">
+      <div class="container mx-auto px-4 text-center">
+        <h2 class="text-2xl font-bold mb-4">Về chúng tôi</h2>
+        <img src="https://via.placeholder.com/800x400?text=Giới+thiệu" alt="Giới thiệu" class="mx-auto">
+      </div>
+    </section>
+  </main>
+
+  <!-- JavaScript đơn giản -->
+  <script>
+    // Hiện/ẩn thanh tìm kiếm
+    function toggleSearch() {
+      const searchBar = document.getElementById('searchBar');
+      searchBar.classList.toggle('hidden');
+    }
+
+    // Hiện/ẩn popup danh mục
+    function toggleCategory() {
+      const popup = document.getElementById('categoryPopup');
+      popup.classList.toggle('open');
+    }
+
+    // Điều hướng khi nhấp vào liên kết
+    document.querySelectorAll('nav a, #mobileMenu a').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const href = this.getAttribute('href');
+        window.location.href = href; // Chuyển hướng đến trang tương ứng
+        if (window.innerWidth <= 767) {
+          toggleMobileMenu(); // Đóng menu mobile
+        }
+      });
+    });
+
+    // Tự động chuyển ảnh mỗi 5 giây
+    const homeSection = document.getElementById('home');
+    const images = homeSection.querySelectorAll('a');
+    let currentImageIndex = 0;
+
+    function autoScroll() {
+      currentImageIndex = (currentImageIndex + 1) % images.length;
+      const scrollPosition = currentImageIndex * window.innerHeight;
+      homeSection.scrollTo({
+        top: scrollPosition,
+        behavior: 'smooth'
+      });
+    }
+
+    setInterval(autoScroll, 5000);
+
+    // Thực hiện tìm kiếm
+    function performSearch() {
+      const searchInput = document.getElementById('searchInput');
+      const keyword = searchInput.value.trim();
+      if (keyword) {
+        alert(`Tìm kiếm: ${keyword}`);
+        searchInput.value = '';
+        toggleSearch();
+      } else {
+        alert('Vui lòng nhập từ khóa tìm kiếm!');
+      }
+    }
+
+    // Hiện/ẩn menu mobile
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById('mobileMenu');
+      mobileMenu.style.display = (mobileMenu.style.display === 'block') ? 'none' : 'block';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trang sản phẩm đẹp</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="1sanpham.css">
+</head>
+<body>
+  <div class="header">
+    <div class="logo">Sunshine</div>
+    <div class="menu">
+      <a href="trangchucuoi.html">Trang chủ</a>
+      <a href="sanphamchuan.html">Sản phẩm</a>
+      <a href="vechungtoi.html">Về chúng tôi</a>
+      <a href="cart.html">Giỏ Hàng</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="main">
+      <div class="product-image">
+        <img src="đầm len liền thân dây rút nhỏ 319.png" alt="Ảnh sản phẩm">
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <h1 class="product-name">Đầm len liền thân dây rút nhỏ</h1>
+      
+      <div class="product-price">
+        <h4>Giá bán</h4>
+       
+        <p class="price"> 319.000 VND</p>
+      </div>
+      
+      <div class="options">
+        <div class="colors">
+          <h4>Màu sắc:</h4>
+          <p>Xám</p>
+        </div>
+      
+        <div class="sizes">
+          <h4>Chọn size:</h4>
+          <div class="size-options">
+            <button class="size-option" data-size="S">S</button>
+            <button class="size-option" data-size="M">M</button>
+            <button class="size-option" data-size="L">L</button>
+            <button class="size-option" data-size="XL">XL</button>
+          </div>
+        </div>
+      
+        <div class="size-guide">
+          <h4>Hướng dẫn chọn size:</h4>
+          <a href="javascript:void(0)" class="toggle-size-guide" onclick="toggleSizeGuide()">Nhấn vào đây để xem hướng dẫn</a>
+          <img id="size-guide-img" src="chonsize.png" alt="Hướng dẫn chọn size" style="width:65%; border-radius: 5px; display: none;" class="imgsize">
+        </div>
+      
+        <div class="shop-buttons">
+          <button class="buy-now">🛒 Mua ngay</button>
+          <div class="cart">
+            <img src="giohangg.png" alt="Giỏ hàng" class="cart-icon">
+          </div>
+        </div>
+      
+        <div class="product-info">
+          <h4>Chi tiết sản phẩm</h4>
+          <ul>
+            <li><strong>Chất liệu:</strong> Len</li>
+            <li><strong>Màu sắc:</strong> Xám</li>
+            <li><strong>Kiểu dáng:</strong> Đầm len liền thân, dây rút nhỏ</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="related-products">
+    <p class="chu">Sản phẩm bạn có thể thích</p>
+    <div class="product-grid">
+      <a href="damdaitaykevatkemgile.html" class="product-link">
+        <div class="product-item">
+          <img src="đầm dài tay kẻ vạt kèm gile dài 292.png" alt="Sản phẩm 1" loading="lazy">
+          <p class="product-name">Đầm dài tay kẻ vạt kèm gile</p>
+          <p class="product-price">292.000 VND</p>
+        </div>
+      </a>
+      <a href="damlendaitaycotrongiotlexetasau.html" class="product-link">
+        <div class="product-item">
+          <img src="đầm len dài tay cổ tròn giọt lệ xẻ tà sau 716.png" alt="Sản phẩm 2" loading="lazy">
+          <p class="product-name">Đầm len dài tay xẻ tà sau</p>
+          <p class="product-price">716.000 VND</p>
+        </div>
+      </a>
+      <a href="damlendaitayombodyphoivieneo.html" class="product-link">
+        <div class="product-item">
+          <img src="đầm len dài tay ôm body phối viền eo 374.png" alt="Sản phẩm 3" loading="lazy">
+          <p class="product-name">Đầm len dài tay ôm body viền eo</p>
+          <p class="product-price">374.000 VND</p>
+        </div>
+      </a>
+      <a href="damlendaitayphoicoaosomi.html" class="product-link">
+        <div class="product-item">
+          <img src="đầm len dài tay phối cổ áo sơ mi 285.png" alt="Sản phẩm 4" loading="lazy">
+          <p class="product-name">Đầm len dài tay phối cổ áo sơ mi</p>
+          <p class="product-price">285.000 VND</p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="popup" id="popup">
+    <span class="close-popup" onclick="togglePopup(false)">X</span>
+    <div id="orderDetails">
+      <img id="popup-img" src="đầm len liền thân dây rút nhỏ 319.png" alt="Ảnh sản phẩm">
+      <h3 id="popup-name">Moonlit - Đầm len liền thân dây rút nhỏ</h3>
+      <p id="popup-color">Màu: Xám</p>
+      <p id="popup-size">Size: M</p>
+      <div class="quantity-box">
+        <button class="qty-btn qty-decrease">−</button>
+        <span id="popup-quantity">1</span>
+        <button class="qty-btn qty-increase">+</button>
+      </div>
+      <p class="price" id="popup-price">Giá: 319.000 VND</p>
+      <button id="showOrderFormBtn" class="bg-black text-white px-6 py-2 rounded hover:bg-gray-800">Đặt hàng ngay</button>
+    </div>
+  
+    <div id="orderForm" class="hidden">
+      <h4 class="text-lg font-bold">Thông tin đặt hàng</h4>
+      <input type="text" required placeholder="Họ và tên" class="w-full border p-2 rounded">
+      <input type="tel" required placeholder="Số điện thoại" class="w-full border p-2 rounded">
+      <input type="text" required placeholder="Địa chỉ nhận hàng" class="w-full border p-2 rounded">
+      <button id="confirmOrderBtn" class="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700">Xác nhận đặt hàng</button>
+    </div>
+  </div>
+
+  <div class="popup" id="cartPopup">
+    <span class="close-popup" onclick="toggleCartPopup(false)">X</span>
+    <h3>Thông tin sản phẩm</h3>
+    <div class="cart-details">
+      <img id="cart-image" src="đầm len liền thân dây rút nhỏ 319.png" alt="Ảnh sản phẩm đã chọn" class="cart-image">
+      <div class="quantity-box">
+        <strong>Số lượng:</strong>
+        <button class="qty-btn cart-qty-decrease">−</button>
+        <span id="cart-quantity">1</span>
+        <button class="qty-btn cart-qty-increase">+</button>
+      </div>
+      <p><strong>Màu:</strong> <span id="cart-color">Xám</span></p>
+      <p><strong>Size:</strong> <span id="cart-size">M</span></p>
+      <p><strong>Giá tiền:</strong> <span id="cart-price">319.000 VND</span></p>
+    </div>
+    <button id="addToCartBtn" class="add-to-cart-btn">Thêm vào giỏ hàng</button>
+  </div>
+
+  <footer class="footer">
+    © 2025 MyShop. All rights reserved.
+  </footer>
+
+  <script>
+    // Hàm định dạng giá tiền
+    function formatPrice(price) {
+      return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' VND';
+    }
+
+    // Xử lý hướng dẫn chọn size
+    function toggleSizeGuide() {
+      const sizeGuideImg = document.getElementById('size-guide-img');
+      if (sizeGuideImg.style.display === 'none' || !sizeGuideImg.style.display) {
+        sizeGuideImg.style.display = 'block';
+        sizeGuideImg.classList.add('show');
+      } else {
+        sizeGuideImg.style.display = 'none';
+        sizeGuideImg.classList.remove('show');
+      }
+    }
+
+    // Xử lý popup đặt hàng
+    function togglePopup(show) {
+      const popup = document.getElementById('popup');
+      if (popup) {
+        if (show) {
+          popup.classList.add('show');
+        } else {
+          popup.classList.remove('show');
+          document.getElementById('orderDetails').classList.remove('hidden');
+          document.getElementById('orderForm').classList.add('hidden');
+        }
+      }
+    }
+
+    // Xử lý popup giỏ hàng
+    function toggleCartPopup(show) {
+      const cartPopup = document.getElementById('cartPopup');
+      if (cartPopup) {
+        cartPopup.classList.toggle('show', show);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      let selectedSize = '';
+      const selectedColor = 'Xám';
+      const selectedImage = 'đầm len liền thân dây rút nhỏ 319.png';
+      let currentQuantity = 1;
+      const basePrice = 319000; // Base price in VND
+
+      // Xử lý chọn size
+      const sizeOptions = document.querySelectorAll('.size-option');
+      sizeOptions.forEach(option => {
+        option.addEventListener('click', () => {
+          sizeOptions.forEach(opt => opt.classList.remove('active'));
+          option.classList.add('active');
+          selectedSize = option.getAttribute('data-size');
+        });
+      });
+
+      // Hàm cập nhật số lượng và giá tiền
+      function updateQuantity(amount, isCartPopup = false) {
+        const maxQuantity = 10;
+        currentQuantity = Math.max(1, Math.min(maxQuantity, currentQuantity + amount));
+        document.getElementById(isCartPopup ? 'cart-quantity' : 'popup-quantity').innerText = currentQuantity;
+        if (!isCartPopup) {
+          document.getElementById('cart-quantity').innerText = currentQuantity;
+        } else {
+          document.getElementById('popup-quantity').innerText = currentQuantity;
+        }
+
+        // Cập nhật giá tiền
+        const totalPrice = basePrice * currentQuantity;
+        document.getElementById('popup-price').innerText = `Giá: ${formatPrice(totalPrice)}`;
+        document.getElementById('cart-price').innerText = formatPrice(totalPrice);
+      }
+
+      // Xử lý nút tăng/giảm số lượng trong popup "Mua ngay"
+      const qtyDecrease = document.querySelector('.qty-decrease');
+      const qtyIncrease = document.querySelector('.qty-increase');
+      if (qtyDecrease) {
+        qtyDecrease.addEventListener('click', () => updateQuantity(-1));
+      }
+      if (qtyIncrease) {
+        qtyIncrease.addEventListener('click', () => updateQuantity(1));
+      }
+
+      // Xử lý nút tăng/giảm số lượng trong popup "Giỏ hàng"
+      const cartQtyDecrease = document.querySelector('.cart-qty-decrease');
+      const cartQtyIncrease = document.querySelector('.cart-qty-increase');
+      if (cartQtyDecrease) {
+        cartQtyDecrease.addEventListener('click', () => updateQuantity(-1, true));
+      }
+      if (cartQtyIncrease) {
+        cartQtyIncrease.addEventListener('click', () => updateQuantity(1, true));
+      }
+
+      // Xử lý nút "Mua ngay"
+      const buyBtn = document.querySelector('.buy-now');
+      if (buyBtn) {
+        buyBtn.addEventListener('click', () => {
+          if (!selectedSize) {
+            alert('Vui lòng chọn size.');
+            return;
+          }
+          document.getElementById('popup-img').src = selectedImage;
+          document.getElementById('popup-color').innerText = 'Màu: ' + selectedColor;
+          document.getElementById('popup-size').innerText = 'Size: ' + selectedSize;
+          document.getElementById('popup-quantity').innerText = currentQuantity;
+          document.getElementById('popup-price').innerText = `Giá: ${formatPrice(basePrice * currentQuantity)}`;
+          togglePopup(true);
+        });
+      }
+
+      // Xử lý nút "Thêm vào giỏ hàng"
+      const cartIcon = document.querySelector('.cart-icon');
+      if (cartIcon) {
+        cartIcon.addEventListener('click', () => {
+          if (!selectedSize) {
+            alert('Vui lòng chọn size.');
+            return;
+          }
+          document.getElementById('cart-image').src = selectedImage;
+          document.getElementById('cart-color').innerText = selectedColor;
+          document.getElementById('cart-size').innerText = selectedSize;
+          document.getElementById('cart-quantity').innerText = currentQuantity;
+          document.getElementById('cart-price').innerText = formatPrice(basePrice * currentQuantity);
+          toggleCartPopup(true);
+        });
+      }
+
+      // Xử lý popup giỏ hàng
+      const addToCartBtn = document.getElementById('addToCartBtn');
+      if (addToCartBtn) {
+        addToCartBtn.addEventListener('click', () => {
+          const cartQuantity = document.getElementById('cart-quantity').innerText;
+          const cartColor = selectedColor;
+          const cartSize = selectedSize;
+          const cartPrice = formatPrice(basePrice * parseInt(cartQuantity));
+          const cartImage = selectedImage;
+          const cartName = document.getElementById('popup-name').innerText;
+
+          const product = {
+            name: cartName,
+            quantity: parseInt(cartQuantity),
+            color: cartColor,
+            size: cartSize,
+            price: cartPrice,
+            image: cartImage,
+          };
+
+          let cart = JSON.parse(localStorage.getItem('cart')) || [];
+          cart.push(product);
+          localStorage.setItem('cart', JSON.stringify(cart));
+
+          alert('Đã thêm vào giỏ hàng!');
+          toggleCartPopup(false);
+        });
+      }
+
+      const showOrderFormBtn = document.getElementById('showOrderFormBtn');
+      if (showOrderFormBtn) {
+        showOrderFormBtn.addEventListener('click', () => {
+          document.getElementById('orderDetails').classList.add('hidden');
+          document.getElementById('orderForm').classList.remove('hidden');
+        });
+      }
+
+      const confirmOrderBtn = document.getElementById('confirmOrderBtn');
+      if (confirmOrderBtn) {
+        confirmOrderBtn.addEventListener('click', () => {
+          const inputs = document.querySelectorAll('#orderForm input');
+          let isValid = true;
+          inputs.forEach(input => {
+            if (!input.value.trim()) {
+              isValid = false;
+              input.classList.add('invalid');
+              setTimeout(() => input.classList.remove('invalid'), 300);
+            } else {
+              input.classList.remove('invalid');
+            }
+          });
+          if (!isValid) {
+            alert('Vui lòng điền đầy đủ thông tin.');
+            return;
+          }
+          if (confirm('Bạn có chắc chắn muốn đặt hàng?')) {
+            alert('Cảm ơn bạn đã đặt hàng! Chúng tôi sẽ liên hệ sớm nhất.');
+            togglePopup(false);
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

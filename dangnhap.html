@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng Ký & Đăng Nhập - Mặt Trời Nhỏ</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fff7f7;
+      scroll-behavior: smooth;
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Header Styles */
+    header {
+      background-color: transparent;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 0;
+    }
+    .logo img {
+      height: 40px;
+    }
+    .hamburger {
+      display: none;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    nav a {
+      text-decoration: none;
+      color: #374151;
+      font-size: 16px;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #2563eb;
+    }
+    .icons {
+      display: flex;
+      gap: 15px;
+    }
+    .icons img {
+      width: 24px;
+      height: 24px;
+      transition: transform 0.3s;
+    }
+    .icons img:hover {
+      transform: scale(1.1);
+    }
+    #searchBar {
+      background-color: #f3f4f6;
+      padding: 10px;
+      display: none;
+      position: relative;
+    }
+    #searchBar input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px 0 0 4px;
+      font-size: 14px;
+    }
+    #searchBar button {
+      background-color: #3b82f6;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    #searchBar button:hover {
+      background-color: #2563eb;
+    }
+    #mobileMenu {
+      display: none;
+      background-color: #fff;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    #mobileMenu a {
+      display: block;
+      padding: 10px 20px;
+      text-decoration: none;
+      color: #374151;
+    }
+    #mobileMenu a:hover {
+      background-color: #f3f4f6;
+      color: #2563eb;
+    }
+
+    /* Auth Container Styles */
+    .auth-container {
+      max-width: 400px;
+      margin: 80px auto 40px;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      animation: slideInUp 0.5s ease-out;
+    }
+
+    @keyframes slideInUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .auth-container h2 {
+      font-size: 24px;
+      color: #d94c4c;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .auth-toggle {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .auth-toggle button {
+      background: none;
+      border: none;
+      font-size: 16px;
+      font-weight: 500;
+      color: #666;
+      cursor: pointer;
+      padding: 5px 10px;
+      transition: color 0.3s, border-bottom 0.3s;
+    }
+
+    .auth-toggle button.active {
+      color: #d94c4c;
+      border-bottom: 2px solid #d94c4c;
+    }
+
+    .auth-form {
+      display: none;
+    }
+
+    .auth-form.active {
+      display: block;
+    }
+
+    .auth-form input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+      transition: border-color 0.3s;
+    }
+
+    .auth-form input:focus {
+      border-color: #d94c4c;
+      outline: none;
+    }
+
+    .auth-form input.invalid {
+      border-color: #b83c3c;
+      animation: shake 0.3s;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    .auth-form button[type="submit"] {
+      width: 100%;
+      padding: 12px;
+      background-color: #d94c4c;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .auth-form button[type="submit"]:hover {
+      background-color: #b83c3c;
+      transform: translateY(-2px);
+    }
+
+    .error-message {
+      color: #b83c3c;
+      font-size: 14px;
+      text-align: center;
+      margin-bottom: 15px;
+      display: none;
+    }
+
+    .social-login {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .social-login p {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .social-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .social-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      background: white;
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.3s;
+    }
+
+    .social-btn img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .social-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .footer {
+      background-color: #374151;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 40px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 767px) {
+      .hamburger {
+        display: block;
+      }
+      nav {
+        display: none;
+      }
+      .icons {
+        gap: 10px;
+      }
+      #mobileMenu.active {
+        display: block;
+      }
+      .auth-container {
+        margin: 80px 20px 40px;
+        padding: 20px;
+      }
+      .auth-toggle button {
+        font-size: 14px;
+      }
+      .social-btn {
+        padding: 8px 15px;
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <a href="trangchulon.html" class="logo">
+          <img src="logoo.png" alt="Mặt Trời Nhỏ Logo">
+        </a>
+        <div class="hamburger" onclick="toggleMobileMenu()">☰</div>
+        <nav>
+          <a href="trangchucuoi.html">Trang chủ</a>
+          <a href="vechungtoi.html">Về chúng tôi</a>
+          <a href="sanphamchuan.html">Danh mục sản phẩm</a>
+          <a href="lienhe.html">Liên hệ</a>
+        </nav>
+        <div class="icons">
+          <a href="dangnhap.html">
+            <img src="taikhoan.png" alt="Tài khoản">
+          </a>
+          <a href="lienhe.html" target="_blank">
+            <img src="mess.png" alt="Liên hệ">
+          </a>
+          <a href="cart.html">
+            <img src="giohangg.png" alt="Giỏ hàng">
+          </a>
+        </div>
+      </div>
+      <div id="searchBar" class="search-bar">
+        <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm...">
+        <button onclick="performSearch()">Tìm</button>
+        <div id="searchResults"></div>
+      </div>
+      <div id="mobileMenu" class="mobile-menu">
+        <a href="trangchulon.html">Trang chủ</a>
+        <a href="vechungtoi.html">Về chúng tôi</a>
+        <a href="sanphamchuan.html">Danh mục sản phẩm</a>
+        <a href="lienhe.html">Liên hệ</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Auth Container -->
+  <div class="auth-container">
+    <h2>ĐĂNG NHẬP & ĐĂNG KÝ</h2>
+    <div class="auth-toggle">
+      <button class="active" onclick="showForm('login')">Đăng Nhập</button>
+      <button onclick="showForm('register')">Đăng Ký</button>
+    </div>
+
+    <form id="login-form" class="auth-form active">
+      <div class="error-message" id="login-error"></div>
+      <input type="email" id="login-email" placeholder="Email" required>
+      <input type="password" id="login-password" placeholder="Mật khẩu" required>
+      <button type="submit">Đăng Nhập</button>
+    </form>
+
+    <form id="register-form" class="auth-form">
+      <div class="error-message" id="register-error"></div>
+      <input type="email" id="register-email" placeholder="Email" required>
+      <input type="password" id="register-password" placeholder="Mật khẩu" required>
+      <input type="password" id="register-confirm-password" placeholder="Xác nhận mật khẩu" required>
+      <button type="submit">Đăng Ký</button>
+    </form>
+
+    <div class="social-login">
+      <p>Hoặc đăng nhập bằng</p>
+      <div class="social-buttons">
+        <button class="social-btn" onclick="showNotDeveloped('Facebook')">
+          <img src="data:image/png;base64,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" alt="Facebook">
+          Facebook
+        </button>
+        <button class="social-btn" onclick="showNotDeveloped('Zalo')">
+          <img src="data:image/png;base64,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" alt="Zalo">
+          Zalo
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    © 2025 Mặt Trời Nhỏ. All rights reserved.
+  </footer>
+
+  <script>
+    // Header Functions
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById('mobileMenu');
+      mobileMenu.classList.toggle('active');
+    }
+
+    function toggleSearch() {
+      const searchBar = document.getElementById('searchBar');
+      searchBar.classList.toggle('hidden');
+    }
+
+    function performSearch() {
+      const query = document.getElementById('searchInput').value;
+      const resultsDiv = document.getElementById('searchResults');
+      resultsDiv.innerHTML = `<p>Kết quả tìm kiếm cho: ${query}</p>`;
+      // Add actual search logic here
+    }
+
+    // Auth Form Functions
+    function showForm(formType) {
+      const loginForm = document.getElementById('login-form');
+      const registerForm = document.getElementById('register-form');
+      const loginBtn = document.querySelector('.auth-toggle button:first-child');
+      const registerBtn = document.querySelector('.auth-toggle button:last-child');
+
+      if (formType === 'login') {
+        loginForm.classList.add('active');
+        registerForm.classList.remove('active');
+        loginBtn.classList.add('active');
+        registerBtn.classList.remove('active');
+      } else {
+        loginForm.classList.remove('active');
+        registerForm.classList.add('active');
+        loginBtn.classList.remove('active');
+        registerBtn.classList.add('active');
+      }
+    }
+
+    function showError(formId, message) {
+      const errorElement = document.getElementById(`${formId}-error`);
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+    }
+
+    function isValidEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    function showNotDeveloped(platform) {
+      alert(`Đăng nhập bằng ${platform} chưa được phát triển.`);
+    }
+
+    // Register Form Submission
+    document.getElementById('register-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('register-email').value;
+      const password = document.getElementById('register-password').value;
+      const confirmPassword = document.getElementById('register-confirm-password').value;
+
+      if (!isValidEmail(email)) {
+        showError('register', 'Email không hợp lệ.');
+        document.getElementById('register-email').classList.add('invalid');
+        setTimeout(() => document.getElementById('register-email').classList.remove('invalid'), 300);
+        return;
+      }
+      if (password.length < 6) {
+        showError('register', 'Mật khẩu phải có ít nhất 6 ký tự.');
+        document.getElementById('register-password').classList.add('invalid');
+        setTimeout(() => document.getElementById('register-password').classList.remove('invalid'), 300);
+        return;
+      }
+      if (password !== confirmPassword) {
+        showError('register', 'Mật khẩu xác nhận không khớp.');
+        document.getElementById('register-confirm-password').classList.add('invalid');
+        setTimeout(() => document.getElementById('register-confirm-password').classList.remove('invalid'), 300);
+        return;
+      }
+
+      alert('Đăng ký thành công với email: ' + email);
+      document.getElementById('register-form').reset();
+      showForm('login');
+    });
+
+    // Login Form Submission
+    document.getElementById('login-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+
+      if (!isValidEmail(email)) {
+        showError('login', 'Email không hợp lệ.');
+        document.getElementById('login-email').classList.add('invalid');
+        setTimeout(() => document.getElementById('login-email').classList.remove('invalid'), 300);
+        return;
+      }
+      if (password.length < 6) {
+        showError('login', 'Mật khẩu phải có ít nhất 6 ký tự.');
+        document.getElementById('login-password').classList.add('invalid');
+        setTimeout(() => document.getElementById('login-password').classList.remove('invalid'), 300);
+        return;
+      }
+
+      alert('Đăng nhập thành công với email: ' + email);
+      document.getElementById('login-form').reset();
+    });
+  </script>
+</body>
+</html>
