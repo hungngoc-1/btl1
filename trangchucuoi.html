@@ -52,7 +52,7 @@
       border: 1px solid #e5e7eb;
       max-height: 300px;
       overflow-y: auto;
-      z-index: 100;
+      z-index: 1010;
       display: none;
     }
     #searchResults a {
@@ -79,7 +79,7 @@
       left: 0;
       right: 0;
       background: white;
-      z-index: 50;
+      z-index: 1005;
       padding: 10px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
@@ -102,10 +102,17 @@
         display: block;
       }
       nav {
-        display: none;
+        display: none !important; /* Ẩn menu desktop trên mobile */
+      }
+      #mobileMenu {
+        display: none; /* Ẩn menu mobile theo mặc định */
+      }
+      #mobileMenu.show {
+        display: block; /* Hiển thị khi được toggle */
       }
       header .container {
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: space-between;
         padding: 10px;
       }
       header .flex.items-center.space-x-4 {
@@ -162,7 +169,7 @@
         <img src="logoo.png" alt="Logo" class="h-10">
       </a>
       <div class="hamburger" onclick="toggleMobileMenu()">☰</div>
-      <nav class="flex items-center space-x-6">
+      <nav class="hidden md:flex items-center space-x-6">
         <a href="trangchucuoi.html" class="text-gray-700 hover:text-blue-600 active">Trang chủ</a>
         <a href="vechungtoi.html" class="text-gray-700 hover:text-blue-600">Về chúng tôi</a>
         <a href="sanphamchuan.html" class="text-gray-700 hover:text-blue-600">Danh mục hàng</a>
@@ -188,10 +195,11 @@
       <button onclick="performSearch()" class="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-600">Tìm</button>
       <div id="searchResults"></div>
     </div>
-    <div id="mobileMenu" class="hidden">
+    <div id="mobileMenu" class="hidden md:hidden">
       <a href="trangchucuoi.html" class="text-gray-700 hover:text-blue-600 block p-2">Trang chủ</a>
       <a href="vechungtoi.html" class="text-gray-700 hover:text-blue-600 block p-2">Về chúng tôi</a>
       <a href="sanphamchuan.html" class="text-gray-700 hover:text-blue-600 block p-2">Danh mục hàng</a>
+      <a href="lienhe.html" class="text-gray-700 hover:text-blue-600 block p-2">Liên hệ</a>
     </div>
   </header>
 
@@ -293,7 +301,7 @@
   <!-- JavaScript -->
   <script>
     // Dữ liệu sản phẩm
-    const products = [
+     const products = [
     { name: 'quần jeans dài cạp đính nhiều cúc gập gấu', link: 'quần jeans dài cạp đính nhiều cúc gập gấu 512.html', category: 'vay-quan', price: '512,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+jeans+dài+cạp+đính+nhiều+cúc+gập+gấu' },
       { name: 'quần jeans dáng badgy', link: 'quần jeans dáng badgy 415.html', category: 'vay-quan', price: '415,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+jeans+dáng+badgy' },
       { name: 'quần jeans hai túi trước có con đỉa be', link: 'quần jeans hai túi trước có con đỉa be 405.html', category: 'vay-quan', price: '405,000 VND', image: 'https://via.placeholder.com/400x400?text=Quần+jeans+hai+túi+trước+có+con+đỉa+be' },
@@ -429,7 +437,7 @@
     // Hiện/ẩn menu mobile
     function toggleMobileMenu() {
       const mobileMenu = document.getElementById('mobileMenu');
-      mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
+      mobileMenu.classList.toggle('show');
     }
 
     // Tìm kiếm
