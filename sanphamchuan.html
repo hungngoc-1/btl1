@@ -288,10 +288,29 @@
         display: none !important; /* Ẩn filter bar trên desktop */
       }
     }
+    footer {
+  flex-shrink: 0;
+  background-color: #1f2937; /* Khớp với bg-gray-800 */
+  color: white;
+  padding: 2rem 1rem; /* Khớp với py-8 và px-4 */
+}
+ footer {
+      flex-shrink: 0;
+      background-color: #1f2937;
+      color: white;
+      padding: 2rem 1rem;
+    }
+    footer .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px; /* Khoảng cách giữa các phần tử */
+    }
   </style>
 </head>
 <body>
   <!-- Header -->
+   <div class="aaaaa">
   <header class="header p-4 flex items-center justify-between">
     <a href="trangchulon.html" class="logo">
       <img src="logoo.png" alt="Logo" class="h-10">
@@ -299,8 +318,9 @@
     <div class="hamburger" onclick="toggleMobileMenu()">☰</div>
     <nav class="hidden md:flex space-x-4">
       <a href="trangchucuoi.html" class="text-gray-700 hover:text-blue-600">Trang chủ</a>
+       <a href="sanphamchuan.html" class="text-gray-700 hover:text-blue-600">Danh mục hàng</a>
       <a href="vechungtoi.html" class="text-gray-700 hover:text-blue-600">Về chúng tôi</a>
-      <a href="sanphamchuan.html" class="text-gray-700 hover:text-blue-600">Danh mục hàng</a>
+     
       <a href="lienhe.html" class="text-gray-700 hover:text-blue-600">Liên hệ</a>
     </nav>
     <div class="flex space-x-4">
@@ -319,8 +339,9 @@
     </div>
     <div id="mobileMenu" class="hidden md:hidden">
       <a href="trangchucuoi.html" class="text-gray-700 hover:text-blue-600 block p-2">Trang chủ</a>
+        <a href="sanphamchuan.html" class="text-gray-700 hover:text-blue-600 block p-2">Danh mục hàng</a>
       <a href="vechungtoi.html" class="text-gray-700 hover:text-blue-600 block p-2">Về chúng tôi</a>
-      <a href="sanphamchuan.html" class="text-gray-700 hover:text-blue-600 block p-2">Danh mục hàng</a>
+    
       <a href="lienhe.html" class="text-gray-700 hover:text-blue-600 block p-2">Liên hệ</a>
     </div>
   </header>
@@ -1052,7 +1073,18 @@
       </div>
     </div>
   </div>
-
+  </div>
+ <footer id="section4" class="bg-gray-800 text-white py-8">
+    <div class="container mx-auto px-4">
+      <h3 class="text-xl font-bold mb-4 text-center">Mặt trời nhỏ</h3>
+      <p class="text-gray-400 mb-4 text-center">Cửa hàng thời trang của sự tươi sáng và phong cách.</p>
+      <div class="links flex justify-center gap-6">
+        <a href="lienhe.html" class="text-gray-400 hover:text-white">Liên hệ</a>
+        <a href="#" class="text-gray-400 hover:text-white">Chính sách</a>
+        <a href="about.html" class="text-gray-400 hover:text-white">Về chúng tôi</a>
+      </div>
+    </div>
+  </footer>
   <script>
     // Dữ liệu sản phẩm
     const products = [
